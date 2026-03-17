@@ -215,7 +215,7 @@ h1 .accent { color: var(--accent); }
   font-family: var(--mono);
   font-size: 0.85rem;
   line-height: 1.8;
-  min-height: 130px;
+  min-height: 280px;
   text-align: left;
 }
 
@@ -595,13 +595,18 @@ footer {
 <script>
 // Terminal animation
 const lines = [
-  { type: 'input',  text: 'weave /bin/date' },
+  { type: 'input',  text: 'weave --seed 12345 /bin/date' },
+  { type: 'output', text: 'Fri Jun  2 22:33:25 EEST 2000' },
+  { type: 'blank' },
+  { type: 'input',  text: 'weave --seed 12345 /bin/date' },
+  { type: 'output', text: 'Fri Jun  2 22:33:25 EEST 2000' },
+  { type: 'blank' },
+  { type: 'comment', text: '# Same seed, same result.' },
+  { type: 'blank' },
+  { type: 'input',  text: 'weave --seed 99999 /bin/date' },
   { type: 'output', text: 'Sun Mar 10 01:34:50 EET 2041' },
   { type: 'blank' },
-  { type: 'input',  text: 'weave /bin/date' },
-  { type: 'output', text: 'Sun Mar 10 01:34:50 EET 2041' },
-  { type: 'blank' },
-  { type: 'comment', text: '# Same output, every time.' },
+  { type: 'comment', text: '# Different seed, different result.' },
 ];
 
 const term = document.getElementById('term');
@@ -656,6 +661,7 @@ function renderLine() {
     outSpan.style.color = 'var(--accent)';
     typeText(outSpan, line.text, 30, () => {
       lineIndex++;
+      setTimeout(renderLine, 400);
     });
   }
 }
